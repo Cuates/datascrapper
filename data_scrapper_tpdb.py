@@ -14,6 +14,28 @@ The script defines a WebScraper class which:
 - Scrapes data for specified categories.
 - Saves the scraped data to a JSON file.
 - Logs the execution time of the script.
+
+Usage:
+    Modify the CONFIG constants in the main block to match your environment, then run the script.
+
+    python dta_scrapper_tpdb.py
+
+Dependencies:
+    - requests
+
+Pip:
+    Make sure your pip is updated
+    python.exe -m pip install --upgrade pip
+
+Windows:
+    If warning on a Windows machine perform the following
+    WARNING: The scripts pip.exe, pip3.12.exe and pip3.exe are installed in 'C:\\Users\\<user_name>\\AppData\\Roaming\\Python\\Python312\\Scripts' which is not on PATH.
+    Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+
+Installation:
+Ensure you have Docker installed and running on your machine.
+Install the required Python package:
+    pip install requests
 """
 
 import os
