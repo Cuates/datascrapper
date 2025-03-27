@@ -42,8 +42,9 @@ import json
 from datetime import datetime
 from pathlib import Path
 import requests
+from typing import Dict, List, Optional, Union
 
-def rgb_color(r, g, b, text):
+def rgb_color(r: int, g: int, b: int, text: str) -> str:
     """
     Returns a string with ANSI escape codes for colored terminal output.
 
@@ -63,34 +64,34 @@ class WebScraper:
     A web scraper to fetch and save data from a specified API.
 
     Attributes:
-        config (dict): Configuration dictionary containing base_url, api_url, api_key, and categories.
+        config (Dict[str, Union[str, List[str]]]): Configuration dictionary containing base_url, api_url, api_key, and categories.
         base_url (str): Base URL for the API.
         api_url (str): Full API URL.
         url_and_base (str): Concatenated API and base URL.
         api_key (str): API key for authentication.
-        categories (list): List of categories to scrape.
+        categories (List[str]): List of categories to scrape.
         session (requests.Session): HTTP session for making requests.
-        all_data (dict): Dictionary to store scraped data.
+        all_data (Dict[str, List[Dict]]): Dictionary to store scraped data.
     """
 
-    def __init__(self, config):
+    def __init__(self, config: Dict[str, Union[str, List[str]]]):
         """
         Initializes the WebScraper with a configuration dictionary.
 
         Args:
-            config (dict): Configuration dictionary containing base_url, api_url, api_key, and categories.
+            config (Dict[str, Union[str, List[str]]]): Configuration dictionary containing base_url, api_url, api_key, and categories.
         """
         self.config = config
-        self.base_url = self.config['base_url']
-        self.api_url = self.config['api_url']
-        self.url_and_base = self.api_url + self.base_url
-        self.api_key = self.config['api_key']
-        self.categories = self.config['categories']
-        self.session = requests.Session()
+        self.base_url: str = self.config['base_url']
+        self.api_url: str = self.config['api_url']
+        self.url_and_base: str = self.api_url + self.base_url
+        self.api_key: str = self.config['api_key']
+        self.categories: List[str] = self.config['categories']
+        self.session: requests.Session = requests.Session()
         self.session.headers.update({'Authorization': f'Bearer {self.api_key}'})
-        self.all_data = {}
+        self.all_data: Dict[str, List[Dict]] = {}
 
-    def fetch_content(self, url):
+    def fetch_content(self, url: str) -> Optional[Dict]:
         """
         Fetches content from a given URL and returns the JSON response.
 
@@ -98,7 +99,7 @@ class WebScraper:
             url (str): URL to fetch content from.
 
         Returns:
-            dict: JSON response if the request is successful, None otherwise.
+            Optional[Dict]: JSON response if the request is successful, None otherwise.
         """
         try:
             response = self.session.get(url, timeout=10)
@@ -108,7 +109,7 @@ class WebScraper:
             print(rgb_color(255, 0, 0, f"Error fetching content for {url}: {e}"))
             return None
 
-    def scrape_category(self, category):
+    def scrape_category(self, category: str) -> None:
         """
         Scrapes data for a given category.
 
@@ -131,7 +132,7 @@ class WebScraper:
             else:
                 category_url = None
 
-    def run_scraper(self):
+    def run_scraper(self) -> None:
         """
         Executes the scraper for all categories and saves the data.
         """
@@ -141,7 +142,7 @@ class WebScraper:
             self.scrape_category(category)
         self.save_data()
 
-    def save_data(self):
+    def save_data(self) -> None:
         """
         Saves the scraped data to a JSON file.
         """
@@ -157,7 +158,7 @@ class WebScraper:
             print(rgb_color(255, 255, 0, f"No data returned in the array {self.all_data}"))
 
 if __name__ == "__main__":
-    CONFIG = {
+    CONFIG: Dict[str, Union[str, List[str]]] = {
         'base_url': '<base_url>',
         'api_url': '<api_url>',
         'api_key': 'api_key',
