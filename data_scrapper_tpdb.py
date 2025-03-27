@@ -5,7 +5,7 @@ The script uses the following:
 - Requests library to handle HTTP requests.
 - JSON library to handle JSON data.
 - Datetime library to handle date and time for logging and file naming.
-- OS library to handle file path operations.
+- Pathlib library to handle file path operations.
 - ANSI escape sequences for colored terminal output.
 
 The script defines a WebScraper class which:
@@ -38,9 +38,9 @@ Install the required Python package:
     pip install requests
 """
 
-import os
 import json
 from datetime import datetime
+from pathlib import Path
 import requests
 
 def rgb_color(r, g, b, text):
@@ -147,10 +147,10 @@ class WebScraper:
         """
         if self.all_data:
             now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            output_file = os.path.join(script_dir, f'output_{now}.json')
+            script_dir = Path(__file__).parent
+            output_file = script_dir / f'output_{now}.json'
 
-            with open(output_file, 'w', encoding='utf-8') as json_file:
+            with output_file.open('w', encoding='utf-8') as json_file:
                 json.dump(self.all_data, json_file, indent=2)
             print(rgb_color(0, 255, 0, f"Data successfully saved to {output_file}"))
         else:
